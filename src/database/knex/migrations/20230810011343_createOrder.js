@@ -1,15 +1,17 @@
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
-exports.up = function(knex) {
-  
-};
+exports.up = knex => knex.schema.createTable("order", table=>{
 
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
-exports.down = function(knex) {
-  
-};
+    table.increments("id");
+    table.text("status");
+    table.text("detalhes");
+    table.timestamp("data").default(knex.fn.now());
+    
+    
+    
+    
+    
+    
+    
+    
+    });
+    
+    exports.down = knex => knex.schema.createTable("order");

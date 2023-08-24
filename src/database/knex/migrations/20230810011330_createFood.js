@@ -1,15 +1,17 @@
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
-exports.up = function(knex) {
-  
-};
+exports.up = knex => knex.schema.createTable("food", table=>{
 
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
-exports.down = function(knex) {
-  
-};
+table.increments("id");
+table.text("nome");
+table.text("categoria");
+table.text("preco");
+table.text("ingredientes");
+
+
+
+
+
+
+
+});
+
+exports.down = knex => knex.schema.createTable("food");
