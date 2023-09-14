@@ -1,6 +1,6 @@
 const sqliteConnection = require('../database/sqlite');
 const knex = require("../database/knex");
-
+const AppError = require("../utils/AppError");
 
 class FoodController {
 
@@ -12,18 +12,12 @@ async create(request, response){
    const sameIngredientName = await database.get("SELECT * FROM food WHERE nome = (?)", [nome]);
    
    if(sameIngredientName){
-        return response.status(401).json({error: "Food already exists"});
+       throw new AppError("Esta comida já esta cadastrada!",401);
    }
    
-   const insertFood = await knex("food").insert({nome,categoria,preco,ingredientes})
+   const insertFood = await knex("food").insert({nome,categoria,preco,ingredientes});
 
-
-   
-
-
-   return response.status(200).json("Parabens deu certo!!!!");
-
-   
+   return response.status(200).json("Cadastro concluido");  
         
 
 }
