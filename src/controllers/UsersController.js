@@ -40,7 +40,7 @@ async create(request,response){
 
 async update(request, response){
     const { name,email,password,old_password} = request.body;
-     const user_id = request.query.user_id;
+     const user_id = request.user.id;
 
      const database = await sqliteConnection();
 
