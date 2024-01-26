@@ -12,6 +12,7 @@ table.text("ingredientes");
 
 
 
+
 });
 
 exports.down = knex => knex.schema.createTable("food");
