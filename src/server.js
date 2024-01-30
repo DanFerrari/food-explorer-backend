@@ -4,7 +4,7 @@ const AppError = require("./utils/AppError");
 
 const migrationsRun = require("./database/sqlite/migrations");
 
-
+const cors = require("cors");
 const app = express();
 const PORT = 3000;
 const routes = require("./routes");
@@ -12,7 +12,7 @@ const routes = require("./routes");
 migrationsRun();
 
 app.use(express.json());
-
+app.use(cors());
 app.use(routes);
 
 app.use((error, request, response, next) => {
