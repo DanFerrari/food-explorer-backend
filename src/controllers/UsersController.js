@@ -83,7 +83,7 @@ async update(request, response){
     [user.name, user.email, user.password, user.id]    
     );
 
-    return response.status(200).json("Funcionou bb!!!");
+    return response.status(200).json("Usuario atualizado");
 
 }
  
