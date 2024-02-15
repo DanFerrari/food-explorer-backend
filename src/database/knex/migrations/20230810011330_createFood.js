@@ -5,6 +5,8 @@ table.text("nome");
 table.text("categoria");
 table.text("preco");
 table.text("ingredientes");
+table.text("imagem");
+table.text("descricao").notNullable();
 
 
 
