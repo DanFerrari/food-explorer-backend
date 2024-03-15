@@ -1,12 +1,11 @@
-exports.up = knex => knex.schema.createTable("food", table=>{
+exports.up = knex => knex.schema.createTable("dish", table=>{
 
 table.increments("id");
-table.text("nome");
-table.text("categoria");
-table.text("preco");
-table.text("ingredientes");
-table.text("imagem");
-table.text("descricao").notNullable();
+table.text("name");
+table.text("category");
+table.text("price");
+table.text("dish_image");
+table.text("description").notNullable();
 
 
 
@@ -17,4 +16,4 @@ table.text("descricao").notNullable();
 
 });
 
-exports.down = knex => knex.schema.createTable("food");
+exports.down = knex => knex.schema.createTable("dish");
