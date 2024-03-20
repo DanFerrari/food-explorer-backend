@@ -7,86 +7,102 @@ const sqliteConnection = require("../database/sqlite");
 class UsersController{
 
 
-async create(request,response){
-
+    async create(request, response) {
+        const { name, email, password } = request.body
     
-    const {name, email, password} = request.body;
+        const checkEmailExists = await knex("users").where({ email }).first()
     
-    const database = await sqliteConnection();
-
-    const checkUserExits = await database.get("SELECT * FROM users WHERE email =(?)", [email]);
-
-    if(checkUserExits){
-        throw new AppError("Este e-mail já está em uso");
-       
-    }
-
-    const hashedPassword = await hash(password,8);
-
-    const userId = await database.run("INSERT INTO users (name,email,password) VALUES(?,?,?)",[name,email,hashedPassword]); 
-   
-   
-
-
-
-
-
-    return response.status(201).json("Usuario Criado");
-
-
-}
-
-
-
-async update(request, response){
-    const { name,email,password,old_password} = request.body;
-     const user_id = request.user.id;
-
-     const database = await sqliteConnection();
-
-     const user = await database.get("SELECT * FROM users WHERE id = (?)", [user_id]);
-
-     if(!user){
-            throw new AppError("Usuário não encontrado");
-     }
-
-     const userWithUpdateEmail = await database.get("SELECT * FROM users WHERE email = (?)",[email]);
-
-    if(userWithUpdateEmail && userWithUpdateEmail.id !== user.id){
-        throw new AppError("Este e-mail já esta em uso.");
-    }
-
-
-
-    user.name = name ?? user.name;
-    user.email = email ?? user.email; 
-
-    if(password && !old_password){
-        throw new AppError("Você precisa informar a senha antiga para definir a nova senha");
-    }
-    
-    if(password && old_password){
-        const checkOldPassword =await compare(old_password, user.password);
-        if(!checkOldPassword){
-            throw new AppError("A senha antiga não confere.");
+        if (checkEmailExists) {
+          throw new AppError("E-mail encontra-se em uso")
         }
+    
+        const hashPassword = await hash(password, 8)
+    
+        await knex("users").insert({
+          name,
+          email,
+          password: hashPassword,
+        })
+    
+        return response.json({
+          message: "Usuário cadastrado com sucesso",
+        })
+      }
 
-        user.password = await hash(password,8);
-    }
 
-    await database.run(`UPDATE users SET
-    name = ?,
-    email=?,
-    password=?,
-    updated_at= DATETIME('now')
-    WHERE id = ?`,
-    [user.name, user.email, user.password, user.id]    
-    );
-
-    return response.status(200).json("Usuario atualizado");
-
-}
- 
+      async update(request, response) {
+        const user_id = request.user.id
+        const { name, email, oldPassword, newPassword } = request.body
+    
+        const user = await knex("users").where({ id: user_id }).first()
+    
+        if (!user) {
+          throw new AppError("Usuário não encontrado")
+        }
+    
+        const emailIsInUse = await knex("users").where({ email }).first()
+    
+        if (emailIsInUse && emailIsInUse.id !== user.id) {
+          throw new AppError("Email encontra-se em uso")
+        }
+    
+        if (oldPassword === false && newPassword === false) {
+          user.name = name ?? user.name
+          user.email = email ?? user.email
+    
+          await knex("users")
+            .update({
+              name: user.name,
+              email: user.email,
+              updated_at: knex.raw(
+                "strftime('%d/%m/%Y %H:%M:%S', 'now', 'localtime')"
+              ),
+            })
+            .where({ id: user_id })
+        } else {
+          const checkOldPassword = await compare(oldPassword, user.password)
+    
+          if (!checkOldPassword) {
+            throw new AppError("Senha antiga não confere")
+          }
+    
+          const password = await hash(newPassword, 8)
+    
+          user.name = name ?? user.name
+          user.email = email ?? user.email
+          user.password = password ?? user.password
+    
+          await knex("users")
+            .update({
+              name: user.name,
+              email: user.email,
+              password: user.password,
+              updated_at: knex.raw(
+                "strftime('%d/%m/%Y %H:%M:%S', 'now', 'localtime')"
+              ),
+            })
+            .where({ id: user_id })
+        }
+    
+        delete user.password
+    
+        return response.json(user)
+      }
+      async delete(request, response) {
+        const user_id = request.user.id
+    
+        const user = await knex("users").where({ id: user_id }).first()
+    
+        if (!user) {
+          throw new AppError("Usuário não encontrado")
+        }
+    
+        await knex("users").where({ id: user_id }).delete()
+    
+        return response.json({
+          message: "Usuário deletado com sucesso",
+        })
+      }
 
 }
 

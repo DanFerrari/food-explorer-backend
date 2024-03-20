@@ -1,18 +1,49 @@
-const { Router} = require("express");
-const  multer = require("multer");
-const uploadConfig = require("../configs/upload");
+const { Router } = require("express")
+const dishRoutes = Router()
 
-const dishRoutes = Router();
-const DishController = require("../controllers/DishController");
-const dishController = new DishController();
-const ensureAuthenticated = require("../middlewares/ensureAuthenticated");
+const multer = require("multer")
+const uploadConfig = require("../configs/uploads")
+const upload = multer(uploadConfig.MULTER_DISH)
 
-const upload = multer(uploadConfig.MULTER);
+const ensureAuthenticated = require("../middlewares/ensureAuthenticated")
 
+const verifyUserAuthorization = require("../middlewares/verifyUserAuthorization")
 
+const dishControllers = require("../controllers/dishControllers")
+const imageController = require("../controllers/imageController")
 
+dishRoutes.get("/", dishControllers.index)
 
-dishRoutes.post("/", dishController.create);
+dishRoutes.get("/:id", dishControllers.show)
 
-module.exports = foodRoutes;
+dishRoutes.post(
+  "/",
+  
+  ensureAuthenticated,
+  verifyUserAuthorization(["admin"]),
+  dishControllers.create
+)
 
+dishRoutes.put(
+  "/:id",
+  ensureAuthenticated,
+  verifyUserAuthorization(["admin"]),
+  dishControllers.update
+)
+
+dishRoutes.delete(
+  "/:id",
+  ensureAuthenticated,
+  verifyUserAuthorization(["admin"]),
+  dishControllers.delete
+)
+
+dishRoutes.patch(
+  "/image_dish/:dish_id",
+  ensureAuthenticated,
+  verifyUserAuthorization(["admin"]),
+  upload.single("image"),
+  imageController.update
+)
+
+module.exports = dishRoutes

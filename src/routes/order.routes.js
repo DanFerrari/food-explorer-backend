@@ -1,11 +1,15 @@
-const { Router } = require("express");
-const ensureAuthenticated = require("../middlewares/ensureAuthenticated");
-const orderRoutes = Router();
+const { Router } = require("express")
+const orderRoutes = Router()
 
-const OrderController = require("../controllers/OrderController");
-const orderController = new OrderController();
+const ensureAuthenticated = require("../middlewares/ensureAuthenticated")
+const verifyUserAuthorization = require("../middlewares/verifyUserAuthorization")
 
-orderRoutes.use(ensureAuthenticated);
-orderRoutes.post("/", orderController.create);
+const orderController = require("../controllers/OrderController")
 
-module.exports = orderRoutes;
+orderRoutes.post("/", ensureAuthenticated, verifyUserAuthorization(["customer"]), orderController.create)
+orderRoutes.get("/", ensureAuthenticated, verifyUserAuthorization(["customer", "admin"]), orderController.index)
+orderRoutes.get("/:id", ensureAuthenticated, verifyUserAuthorization(["customer", "admin"]), orderController.show)
+orderRoutes.patch("/", ensureAuthenticated, verifyUserAuthorization(["admin"]), orderController.update)
+
+
+module.exports = orderRoutes

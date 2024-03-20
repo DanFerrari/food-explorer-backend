@@ -1,18 +1,22 @@
-const { Router } = require("express");
+const {Router} = require("express");
 
-const usersRouter =  require("./users.routes");
-const dishRouter = require("./dish.routes");
-const orderRouter = require("./order.routes");
-const sessionsRouter = require("./sessions.routes");
-const ingredientsRouter = require("./ingredients.routes");
+const usersValidatedRoutes = require("./usersValidated.routes");
+const usersRoutes = require("./users.routes");
+const sessionsRoutes = require("./sessions.routes");
+const dishRoutes = require("./dish.Routes");
+const favoriteRoutes = require("./favorite.routes");
+const orderRoutes = require("./order.routes");
 
 
 const routes = Router();
 
-routes.use("/users", usersRouter);
-routes.use("/sessions", sessionsRouter);
-routes.use("/dish", foodRouter);
-routes.use("/order", orderRouter);
-routes.use("/ingredients",ingredientsRouter);
+
+routes.use("/favorite", favoriteRoutes);
+routes.use("/validated", usersValidatedRoutes);
+routes.use("/users", usersRoutes);
+routes.use("/sessions", sessionsRoutes);
+routes.use("/dish", dishRoutes);
+routes.use("/order", orderRoutes);
+
 
 module.exports = routes;
