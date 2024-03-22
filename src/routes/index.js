@@ -1,14 +1,14 @@
 const {Router} = require("express");
-
+const routes = Router();
 const usersValidatedRoutes = require("./usersValidated.routes");
 const usersRoutes = require("./users.routes");
 const sessionsRoutes = require("./sessions.routes");
-const dishRoutes = require("./dish.Routes");
+const dishRoutes = require("./dish.routes");
 const favoriteRoutes = require("./favorite.routes");
 const orderRoutes = require("./order.routes");
 
 
-const routes = Router();
+
 
 
 routes.use("/favorite", favoriteRoutes);

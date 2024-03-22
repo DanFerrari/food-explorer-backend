@@ -1,6 +1,6 @@
-const AppError = require("../utils/appError")
+const AppError = require("../utils/AppError")
 
-function ensureAdmin(roleToVerify) {
+function verifyUserAuthorization(roleToVerify) {
   return (request, response, next) => {
     const { role } = request.user
 
@@ -12,4 +12,4 @@ function ensureAdmin(roleToVerify) {
   }
 }
 
-module.exports = ensureAdmin;
+module.exports = verifyUserAuthorization;

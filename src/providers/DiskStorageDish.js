@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const uploadConfig = require("../configs/upload");
+const uploadConfig = require("../configs/uploads");
 
 class DiskStorageDish {
 
@@ -27,5 +27,5 @@ async deleteFile(file){
 
 }
 
-module.exports =DiskStorage;
+module.exports =DiskStorageDish;
 

@@ -1,12 +1,32 @@
 const {hash, compare} = require("bcryptjs");
-
+const knex = require("../database/knex")
 const AppError = require("../utils/AppError");
-const sqliteConnection = require("../database/sqlite");
+
 
 
 class UsersController{
+  async index(request, response) {
+    const { user_id } = request.params
 
+    const user = await knex("users").where({ id: user_id }).first()
 
+    delete user.password
+
+    response.json(user)
+  }
+
+  async show(request, response) {
+    const user_id = request.user.id
+    const user = await knex("users").where({ id: user_id }).first()
+
+    if (!user) {
+      throw new AppError("Usuário não encontrado")
+    }
+
+    delete user.password
+    
+    response.json(user)
+  }
     async create(request, response) {
         const { name, email, password } = request.body
     
@@ -88,6 +108,7 @@ class UsersController{
     
         return response.json(user)
       }
+
       async delete(request, response) {
         const user_id = request.user.id
     
@@ -106,4 +127,4 @@ class UsersController{
 
 }
 
-module.exports = UsersController;
+module.exports = new UsersController();

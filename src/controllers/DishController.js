@@ -203,4 +203,3 @@ module.exports = new DishController();
 
 
 
-module.exports = DishController;

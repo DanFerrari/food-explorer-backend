@@ -4,7 +4,7 @@ const favoriteRoutes = Router()
 const ensureAuthenticated = require("../middlewares/ensureAuthenticated")
 const verifyUserAuthorization = require("../middlewares/verifyUserAuthorization")
 
-const favoriteControllers = require("../controllers/favoriteControllers")
+const favoriteControllers = require("../controllers/FavoriteControllers")
 
 favoriteRoutes.post("/:dish_id", ensureAuthenticated, verifyUserAuthorization(["customer"]), favoriteControllers.create)
 

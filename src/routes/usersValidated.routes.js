@@ -1,8 +1,8 @@
 const { Router } = require("express");
 const usersValidatedRoutes = Router();
 
-const usersValidatedControllers = require("../controllers/usersValidatedControllers");
+const usersValidatedController = require("../controllers/UsersValidatedController");
 
-usersValidatedRoutes.post("/", usersValidatedControllers.index);
+usersValidatedRoutes.post("/", usersValidatedController.index);
 
 module.exports = usersValidatedRoutes;

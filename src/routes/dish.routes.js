@@ -1,5 +1,5 @@
 const { Router } = require("express")
-const dishRoutes = Router()
+const dishRoutes = Router();
 
 const multer = require("multer")
 const uploadConfig = require("../configs/uploads")
@@ -9,8 +9,8 @@ const ensureAuthenticated = require("../middlewares/ensureAuthenticated")
 
 const verifyUserAuthorization = require("../middlewares/verifyUserAuthorization")
 
-const dishControllers = require("../controllers/dishControllers")
-const imageController = require("../controllers/imageController")
+const dishControllers = require("../controllers/DishController")
+const imageController = require("../controllers/ImageController")
 
 dishRoutes.get("/", dishControllers.index)
 
@@ -46,4 +46,4 @@ dishRoutes.patch(
   imageController.update
 )
 
-module.exports = dishRoutes
+module.exports = dishRoutes;

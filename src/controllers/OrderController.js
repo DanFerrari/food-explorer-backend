@@ -1,5 +1,5 @@
-const knex = require("../dataBase/knex")
-const AppError = require("../utils/appError")
+const knex = require("../database/knex")
+const AppError = require("../utils/AppError")
 
 class OrderController {
   async create(request, response) {

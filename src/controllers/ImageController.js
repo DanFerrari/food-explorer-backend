@@ -1,5 +1,5 @@
-const AppError = require("../utils/appError")
-const knex = require("../dataBase/knex")
+const AppError = require("../utils/AppError")
+const knex = require("../database/knex")
 const DiskStorageDish = require("../providers/DiskStorageDish")
 
 class ImageController {

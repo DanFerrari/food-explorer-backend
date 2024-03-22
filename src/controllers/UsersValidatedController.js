@@ -1,6 +1,6 @@
-const knex = require("../dataBase/knex")
+const knex = require("../database/knex");
 
-class UsersValidatedControllers {
+class UsersValidatedController{
   async index(request, response) {
     const user = request.body
     let routeAuthorization
@@ -21,4 +21,4 @@ class UsersValidatedControllers {
   }
 }
 
-module.exports = new UsersValidatedControllers()
+module.exports = new UsersValidatedController()
